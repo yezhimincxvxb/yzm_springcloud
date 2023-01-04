@@ -13,10 +13,16 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/consumer")
 public class OrderController {
 
-    public static final String PAYMENT_URL = "http://localhost:8001/payment8001/payment";
+//    public static final String PAYMENT_URL = "http://localhost:8001/payment8001/payment";
+    public static final String PAYMENT_URL = "http://PROVIDER-PAYMENT8001/payment8001/payment";
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @GetMapping("/hello")
+    public CommonResult<?> hello() {
+        return restTemplate.getForObject(PAYMENT_URL + "/hello", CommonResult.class);
+    }
 
     @GetMapping("/save")
     public CommonResult<?> save(Payment payment) {

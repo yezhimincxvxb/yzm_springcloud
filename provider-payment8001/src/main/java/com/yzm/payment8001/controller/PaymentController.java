@@ -4,6 +4,7 @@ import com.yzm.commons.api.CommonResult;
 import com.yzm.commons.entity.Payment;
 import com.yzm.payment8001.service.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,6 +21,14 @@ public class PaymentController {
 
     @Autowired
     private IPaymentService paymentService;
+
+    @Value("${server.port}")
+    private String port;
+
+    @GetMapping("/hello")
+    public CommonResult<String> hello() {
+        return CommonResult.success("hello " + port);
+    }
 
     @PostMapping("/save")
     public CommonResult<Boolean> save(@RequestBody Payment payment) {
