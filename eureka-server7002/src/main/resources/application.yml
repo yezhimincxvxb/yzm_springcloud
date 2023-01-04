@@ -1,0 +1,60 @@
+spring:
+  profiles:
+    active: peer3
+
+---
+spring:
+  profiles: peer1
+  application:
+    name: eureka-server7002
+
+server:
+  port: 7002
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: eureka7002.com
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://eureka7003.com:7003/eureka/,http://eureka7004.com:7004/eureka/
+
+---
+spring:
+  profiles: peer2
+  application:
+    name: eureka-server7003
+
+server:
+  port: 7003
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: eureka7003.com
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7004.com:7004/eureka/
+
+---
+spring:
+  profiles: peer3
+  application:
+    name: eureka-server7004
+
+server:
+  port: 7004
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: eureka7004.com
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
