@@ -3,9 +3,14 @@ package com.yzm.payment.controller;
 import com.yzm.commons.api.CommonResult;
 import com.yzm.commons.entity.Payment;
 import com.yzm.payment.service.IPaymentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Yzm
  * @since 2023/01/04
  */
+@Slf4j
 @RestController
 @RequestMapping("/provider/payment")
 public class PaymentController {
@@ -27,7 +33,6 @@ public class PaymentController {
 
     @GetMapping("/hello")
     public CommonResult<String> hello() {
-        System.out.println("1234");
         return CommonResult.success("hello " + port);
     }
 
@@ -43,6 +48,23 @@ public class PaymentController {
         Payment payment = paymentService.getById(id);
         if (payment != null) return CommonResult.success(payment);
         return CommonResult.fail(payment);
+    }
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @GetMapping(value = "/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            log.info("***** service: " + service);
+        }
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("PROVIDER-PAYMENT-SERVICE");
+        for (ServiceInstance instance : instances) {
+            log.info(instance.getServiceId() + "\t" + instance.getHost() + "\t" + instance.getPort() + "\t" + instance.getUri());
+        }
+        return this.discoveryClient;
     }
 
 }

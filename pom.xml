@@ -13,6 +13,10 @@
         <module>api-commons</module>
         <module>eureka-server-single</module>
         <module>eureka-server-cluster</module>
+        <module>provider-payment-zk</module>
+        <module>consumer-order-zk</module>
+        <module>provider-payment-cs</module>
+        <module>consumer-order-cs</module>
     </modules>
     <packaging>pom</packaging>
 

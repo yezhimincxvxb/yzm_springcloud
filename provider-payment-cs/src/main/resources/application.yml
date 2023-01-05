@@ -1,9 +1,9 @@
 server:
-  port: 8002
+  port: 8007
 
 spring:
   application:
-    name: provider-payment-service
+    name: consul-provider-payment-service
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -12,15 +12,15 @@ spring:
       url: jdbc:mysql://192.168.101.129:3306/mydb?useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:7001/eureka/
-#      defaultZone: http://localhost:7002/eureka/,http://localhost:7003/eureka/,http://localhost:7004/eureka/
-  instance:
-    instance-id: provider-payment${server.port}
-    prefer-ip-address: true
+  cloud:
+    consul:
+      host: 192.168.101.129
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        # 打开心跳机制
+        heartbeat:
+          enabled: true
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml

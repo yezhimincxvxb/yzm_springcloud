@@ -24,7 +24,7 @@ EurekaClient通过注册中心进行访问
 在应用启动后，将会向Eureka Server发送心跳(默认周期为30秒)。
 如果Eureka Server在多个心跳周期内没有接收到其个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除(默认90秒)
 ```
-# 单机模式
+# 注册中心配置
 ```text
 添加依赖
 <dependency>
@@ -36,7 +36,9 @@ EurekaClient通过注册中心进行访问
 @SpringBootApplication
 @EnableEurekaServer
 public class Eureka7001Application {}
-
+```
+### 单机模式
+```text
 eureka:
   instance:
     hostname: localhost #eureka服务端的实例名称
@@ -47,11 +49,16 @@ eureka:
     fetch-registry: false
     service-url:
       #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/    
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # 关闭自我保护机制，保证不可用服务被及时踢除
+    enable-self-preservation: false
+    # 清除过期服务时间间隔，单位毫秒
+    eviction-interval-timer-in-ms: 2000    
 ```
 浏览器访问：http://localhost:7001/
 
-# 集群模式
+### 集群模式
 ```text
 spring:
   profiles:
@@ -112,3 +119,28 @@ eureka:
 ```
 浏览器访问：http://localhost:7002/、http://localhost:7003/、http://localhost:7004/
 或 http://eureka7004.com:7004/
+# 自我保护
+```text
+为什么会产生Eureka自我保护机制?
+为了防止EurekaClient可以正常运行，但是与EurekaServer网络不通情况下，EurekaServer不会立刻将EurekaClient服务剔除
+
+什么是自我保护模式?
+默认情况下，如果EurekaServer在一定时间内没有接收到某个微服务实例的心跳，EurekaServer将会注销该实例(默认90秒)。
+但是当网络分区故障发生(延时、卡顿、拥挤)时，微服务与EurekaServer之间无法正常过通信，以上行为可能变得非常危险了--因为微服务本身其实是健康的，此时本不应该注销这个微服务。
+Eureka通过“自我保护模式 来解决这个问题--当EurekaServer节点在短时间内丢失过多客户端时(可能发生了网络分区故障)，那么这个节点就会进入自我我保护模式。
+
+自我保护机制:默认情况下EurekaClient定时向EurekaServer端发送心跳包
+如果Eureka在server端在一定时间内(默认90秒)没有收到EurekaClient发送心跳包，便会
+直接从服务注册列表中剔除该服务，但是在短时间(90秒中)内丢失了大量的服务实例心跳，
+这时候EurekaServer会开启自我保护机制，不会剔除该服务(该现象可能出现在如果网络不通
+但是EurekaClient为出现宕机，此时如果换做别的注册中心如果一定时间内没有收到心跳会将
+剔除该服务，这样就出现了严重失误，因为客户端还能正常发送心跳，只是网络延迟问题，而
+保护机制是为了解决此问题而产生的)
+
+在自我保护模式中，EurekaServer会保护服务注册表中的信息，不再注销任何服务实实例。
+它的设计哲学就是宁可保留错误的服务注册信息，也不盲目注销任何可能健康的服务实实例。一句话讲解:好死不如赖活着
+
+综上，自我保护模式是一种应对网络异常的安全保护措施。它的架构哲学是宁可同时呆留所有微服务(健康的微服务和不健康的微服务都会保留)
+也不盲目注销任何健康的微服务。使用自我保护模式，可以让Eureka集群更加的健壮、稳定。
+```
+# 

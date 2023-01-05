@@ -21,7 +21,6 @@ public class OrderController {
 
     @GetMapping("/hello")
     public CommonResult<?> hello() {
-        System.out.println("1234");
         return restTemplate.getForObject(PAYMENT_URL + "/hello", CommonResult.class);
     }
 
