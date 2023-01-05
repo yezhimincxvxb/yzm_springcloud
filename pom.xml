@@ -17,6 +17,7 @@
         <module>consumer-order-zk</module>
         <module>provider-payment-cs</module>
         <module>consumer-order-cs</module>
+        <module>consumer-order-ribbon</module>
     </modules>
     <packaging>pom</packaging>
 
