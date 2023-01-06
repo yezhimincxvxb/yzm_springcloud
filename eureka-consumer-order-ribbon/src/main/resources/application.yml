@@ -1,0 +1,14 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: eureka-consumer-order-ribbon-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+  instance:
+    instance-id: consumer-payment-ribbon${server.port}
+    prefer-ip-address: true

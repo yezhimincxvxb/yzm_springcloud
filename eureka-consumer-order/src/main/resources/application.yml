@@ -1,0 +1,22 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: eureka-consumer-order-service
+
+eureka:
+  client:
+    serviceUrl:
+      # 单机版
+      defaultZone: http://localhost:7001/eureka/
+      # 集群版
+#      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/,http://eureka7004.com:7004/eureka/
+  instance:
+#    instance-id: consumer-order
+    #访问路径可以显示IP地址
+#    prefer-ip-address: true
+    #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒)
+    lease-renewal-interval-in-seconds: 1
+    #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，即超过此时间后服务检测不到心跳即过期。
+    lease-expiration-duration-in-seconds: 2

@@ -8,16 +8,20 @@
     <artifactId>yzm_springcloud</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>provider-payment</module>
-        <module>consumer-order</module>
+        <module>eureka-provider-payment</module>
+        <module>eureka-consumer-order</module>
         <module>api-commons</module>
         <module>eureka-server-single</module>
         <module>eureka-server-cluster</module>
-        <module>provider-payment-zk</module>
-        <module>consumer-order-zk</module>
-        <module>provider-payment-cs</module>
-        <module>consumer-order-cs</module>
-        <module>consumer-order-ribbon</module>
+        <module>zookeeper-provider-payment</module>
+        <module>zookeeper-consumer-order</module>
+        <module>consul-provider-payment</module>
+        <module>consul-consumer-order</module>
+        <module>eureka-consumer-order-ribbon</module>
+        <module>eureka-provider-payment-ribbon</module>
+        <module>eureka-consumer-order-openfeign</module>
+        <module>eureka-provider-payment-openfeign</module>
+        <module>eureka-provider-payment-hystrix</module>
     </modules>
     <packaging>pom</packaging>
 

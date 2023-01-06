@@ -22,8 +22,4 @@ eureka:
     instance-id: consumer-order
     #访问路径可以显示IP地址
     prefer-ip-address: true
-    #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒) 
-    lease-renewal-interval-in-seconds: 1
-    #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，即超过此时间后服务检测不到心跳即过期。
-    lease-expiration-duration-in-seconds: 2
 ```

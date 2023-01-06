@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: eureka-consumer-order-feign-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+  instance:
+    instance-id: consumer-payment-feign${server.port}
+    prefer-ip-address: true
+
+
+#设置feign客户端超时时间(OpenFeign默认支持ribbon)，默认1秒
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+
+logging:
+  level:
+    com.yzm.openfeign.order.feign.OrderFeign: debug
