@@ -43,11 +43,6 @@ public interface OrderFeign {
 ```
 # 超时
 ```text
-    #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒) 
-    lease-renewal-interval-in-seconds: 1
-    #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，即超过此时间后服务检测不到心跳即过期。
-    lease-expiration-duration-in-seconds: 2
-
 #设置feign客户端超时时间(OpenFeign默认支持ribbon)，默认1秒
 ribbon:
   #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
