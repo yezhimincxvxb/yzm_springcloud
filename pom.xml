@@ -24,6 +24,10 @@
         <module>eureka-hystrix-provider-payment</module>
         <module>eureka-hystrix-consumer-order</module>
         <module>eureka-hystrix-dashboard</module>
+        <module>eureka-hystrix-turbine</module>
+        <module>eureka-gateway-consumer-order</module>
+        <module>eureka-gateway-provider-payment</module>
+        <module>eureka-gateway-route</module>
     </modules>
     <packaging>pom</packaging>
 

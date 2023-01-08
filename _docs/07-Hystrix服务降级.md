@@ -117,6 +117,9 @@ public class OrderController {
 错误百分比网值:当请求总数在快照时间窗内超过了网值，比发生了30次调用，如果在这30次调用中，有15次发生了超时异常，也就是超的50%的错误百分比，在默认设定50%阀值情况下，这时候就会将断路器打开。
 ```
 # 服务限流
+```text
+
+```
 # dashboard图形监控
 ```text
 1、依赖
@@ -147,17 +150,40 @@ public ServletRegistrationBean getServlet() {
     HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
     ServletRegistrationBean registrationBean = new ServletRegistrationBean(streamServlet);
     registrationBean.setLoadOnStartup(1);
-    registrationBean.addUrlMappings("/hystrix.stream");
+    registrationBean.addUrlMappings("/actuator/hystrix.stream");
     registrationBean.setName("HystrixMetricsStreamServlet");
     return registrationBean;
 }
 2、@EnableHystrix注解
 3、在9001页面添加
-http://localhost/hystrix.stream
+http://localhost/actuator/hystrix.stream
 4、先访问一下有降级熔断的方法，如有@HystrixCommand修饰的方法
 ```
 ![](./imgs/dashboard监控页面.png)
-
+# Turbine 聚合监控
+```text
+1、依赖
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
+</dependency>
+2、
+@SpringBootApplication
+@EnableHystrixDashboard
+@EnableTurbine
+@EnableEurekaClient
+public class TurbineApplication {}
+3、yml
+turbine:
+  # 配置监控服务的列表，表明监控哪些服务多个使用","分割  
+  app-config: eureka-consumer-order-hystrix-service,eureka-provider-payment-hystrix-service 
+  cluster-name-expression: new String("default")
+  combine-host-port: true
+  
+4、浏览器访问 http://localhost:9002/hystrix
+输入：http://localhost:9002/turbine.stream
+```
+![](imgs/turbine聚合监控页面.png)
 
 
 

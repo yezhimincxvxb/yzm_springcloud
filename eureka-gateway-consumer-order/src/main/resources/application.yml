@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: eureka-consumer-order-hystrix-service
+    name: eureka-gateway-consumer-order-service
   main:
     allow-bean-definition-overriding: true
 
@@ -12,7 +12,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:7001/eureka/
   instance:
-    instance-id: consumer-order-hystrix${server.port}
+    instance-id: gateway-consumer-order-${server.port}
     prefer-ip-address: true
 
 feign:

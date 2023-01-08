@@ -1,9 +1,9 @@
 server:
-  port: 80
+  port: 8002
 
 spring:
   application:
-    name: eureka-consumer-order-hystrix-service
+    name: eureka-gateway-provider-payment-service
   main:
     allow-bean-definition-overriding: true
 
@@ -12,13 +12,5 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:7001/eureka/
   instance:
-    instance-id: consumer-order-hystrix${server.port}
+    instance-id: gateway-provider-payment-${server.port}
     prefer-ip-address: true
-
-feign:
-  hystrix:
-    enabled: true
-
-#ribbon:
-#  ReadTimeout: 10000
-#  ConnectTimeout: 10000
