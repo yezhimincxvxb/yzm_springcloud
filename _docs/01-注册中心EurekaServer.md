@@ -26,13 +26,13 @@ EurekaClient通过注册中心进行访问
 ```
 # 注册中心配置
 ```text
-添加依赖
+1、添加依赖
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
 
-启动Eureka Server
+2、启动Eureka Server
 @SpringBootApplication
 @EnableEurekaServer
 public class Eureka7001Application {}
@@ -41,20 +41,16 @@ public class Eureka7001Application {}
 ```text
 eureka:
   instance:
-    hostname: localhost #eureka服务端的实例名称
+    # eureka服务端的实例名称
+    hostname: localhost 
   client:
-    #false表示不向注册中心注册自己。
+    # 默认为true。false表示不向注册中心注册自己。
     register-with-eureka: false
-    #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+    # 默认为true。false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
     fetch-registry: false
     service-url:
-      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  server:
-    # 关闭自我保护机制，保证不可用服务被及时踢除
-    enable-self-preservation: false
-    # 清除过期服务时间间隔，单位毫秒
-    eviction-interval-timer-in-ms: 2000    
+      # 设置与 EurekaServer 交互的地址查询服务和注册服务都需要依赖这个地址。
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/   
 ```
 浏览器访问：http://localhost:7001/
 
@@ -76,11 +72,16 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
+    # 这里使用的是，IP地址与域名的映射。找到C:\Windows\System32\drivers\etc下的hosts文件，添加 127.0.0.1 eureka7002.com 进行映射
+    hostname: eureka7002.com
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:7003/eureka/,http://localhost:7004/eureka/
+      defaultZone: http://eureka7003.com:7003/eureka/,http://eureka7004.com:7004/eureka/
+      # 或直接使用IP地址
+      # defaultZone: http://localhost:7003/eureka/,http://localhost:7004/eureka/
+
 ---
 spring:
   profiles: peer2
@@ -93,12 +94,13 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
+    hostname: eureka7003.com
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:7002/eureka/,http://localhost:7004/eureka/
- 
+      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7004.com:7004/eureka/
+
 ---
 spring:
   profiles: peer3
@@ -111,14 +113,18 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
+    hostname: eureka7004.com
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:7002/eureka/,http://localhost:7003/eureka/    
+      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/ 
 ```
-浏览器访问：http://localhost:7002/、http://localhost:7003/、http://localhost:7004/
-或 http://eureka7004.com:7004/
+浏览器访问：
+http://localhost:7002/、http://localhost:7003/、http://localhost:7004/
+或 
+http://eureka7002.com:7002/、http://eureka7003.com:7003/、http://eureka7004.com:7004/
+![](imgs/注册中心集群.png)
 # 自我保护
 ```text
 为什么会产生Eureka自我保护机制?
@@ -148,19 +154,16 @@ Eureka通过“自我保护模式 来解决这个问题--当EurekaServer节点�
 服务端：
 eureka:
   instance:
-    hostname: localhost #eureka服务端的实例名称
+    hostname: localhost 
   client:
-    #false表示不向注册中心注册自己。
     register-with-eureka: false
-    #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
     fetch-registry: false
     service-url:
-      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
-    # 关闭自我保护机制，保证不可用服务被及时踢除
+    # 是否启动自我保护机制，默认为true。false保证不可用服务被及时踢除
     enable-self-preservation: false
-    # 清除过期服务时间间隔，单位毫秒
+    # 清除过期服务的时间间隔，单位毫秒。默认60000，即一分钟
     eviction-interval-timer-in-ms: 2000    
     
 客户端：
@@ -169,8 +172,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:7001/eureka/
   instance:
-    #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒)
-    lease-renewal-interval-in-seconds: 1
-    #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，即超过此时间后服务检测不到心跳即过期。
-    lease-expiration-duration-in-seconds: 2        
+    # Eureka客户端向服务端发送心跳的时间间隔(证明服务可用)，单位为秒(默认是30秒)
+    lease-renewal-interval-in-seconds: 2
+    # 告诉服务端，如果当前服务 10s 之内还没有给你发送心跳就表示我已经挂了，将我从注册中心剔除掉，默认值为 90秒
+    lease-expiration-duration-in-seconds: 5        
 ```
+![](imgs/关闭自我保护.png)

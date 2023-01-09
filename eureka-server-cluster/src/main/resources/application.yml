@@ -14,6 +14,7 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
+    # 这里使用的是，IP地址与域名的映射。找到C:\Windows\System32\drivers\etc下的hosts文件，添加 127.0.0.1 eureka7002.com 进行映射
     hostname: eureka7002.com
   client:
     registerWithEureka: false

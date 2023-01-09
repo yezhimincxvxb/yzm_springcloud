@@ -21,6 +21,51 @@ SpringCloud Gateway的目标提供统一的路由方式且基于 Filter 链的�
 4、SpringCloud Gateway建立在 Spring Framework 5、Project Reactor 和 Spring Boot 2 之上，使用非阻塞 API
 5、SpringCloud Gateway 还支持 WebSocket， 并且与Spring紧密集成拥有更好的开发体验
 ```
-# Route路由
-# Predicate断言
+# Route路由 gateway-route
+```text
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+配置
+spring:
+  application:
+    name: gateway-route-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 是否启用根据服务名调用，即lb使用
+          enabled: true
+          # 是否允许服务吗小写，默认是大写的
+          lowerCaseServiceId: true
+      routes:
+          # id唯一标识 
+        - id: to_gateway-provider-payment
+          # IP地址调用  
+          uri: http://localhost:8001/
+          # 断言，路由条件
+          predicates:
+            - Path=/payment/**
+        - id: to_gateway-consumer-order
+          # 服务名调用  
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/order/**
+```
+访问：
+http://localhost:9011/payment/hello
+http://localhost:9011/order/hello等等
+### 编程式配置路由规则
+```text
+RouteConfig.java
+访问：
+http://localhost:9011/local/payment/hello
+http://localhost:9011/bai
+http://localhost:9011/du
+```
+# Predicate断言 gateway-predicate
+```text
+
+```
 # Filter过滤

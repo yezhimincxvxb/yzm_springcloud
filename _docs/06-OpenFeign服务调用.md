@@ -41,15 +41,6 @@ public interface OrderFeign {
 
 }
 ```
-# 超时
-```text
-#设置feign客户端超时时间(OpenFeign默认支持ribbon)，默认1秒
-ribbon:
-  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
-  ReadTimeout: 5000
-  #指的是建立连接后从服务器读取到可用资源所用的时间
-  ConnectTimeout: 5000
-```
 # 日志打印功能
 ```text
 NONE:默认的，不显示任何日志;
@@ -68,4 +59,25 @@ public class FeignConfig {
 logging:
   level:
     com.yzm.openfeign.feign.OrderFeign: debug
+```
+# 超时
+```text
+#设置feign客户端超时时间(OpenFeign默认支持ribbon)，默认1秒
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+或者  
+feign:
+  client:
+    config:
+      # default指的所有被加载的默认FeignClient实现的服务配置都生效
+      default:
+        readTimeout: 5000
+        connectTimeout: 5000
+      # 只对@FeignClient(contextId="payment-core")的有效  
+      payment-core:
+        connectTimeout: 3000
+        readTimeout: 3000
 ```

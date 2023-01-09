@@ -1,0 +1,21 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: hystrix-provider-payment-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+  instance:
+    instance-id: hystrix-provider-payment:${server.port}
+    prefer-ip-address: true
+
+# 暴露监听
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"

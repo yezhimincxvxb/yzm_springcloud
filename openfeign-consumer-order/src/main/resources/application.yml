@@ -1,0 +1,33 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: feign-consumer-order-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+  instance:
+    instance-id: feign-consumer-payment:${server.port}
+    prefer-ip-address: true
+
+
+#ribbon:
+#  ReadTimeout: 5000
+#  ConnectTimeout: 5000
+
+logging:
+  level:
+    com.yzm.openfeign.order.feign.OrderFeign: debug
+
+feign:
+  client:
+    config:
+      default:
+        readTimeout: 5000
+        connectTimeout: 5000
+      payment-core:
+        connectTimeout: 3000
+        readTimeout: 3000

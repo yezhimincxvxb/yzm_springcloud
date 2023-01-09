@@ -1,0 +1,26 @@
+server:
+  port: 9011
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+
+spring:
+  application:
+    name: gateway-route-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: to_gateway-provider-payment
+          uri: http://localhost:8001/
+          predicates:
+            - Path=/payment/**
+        - id: to_gateway-consumer-order
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/order/**

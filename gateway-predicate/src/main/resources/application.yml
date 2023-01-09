@@ -1,0 +1,59 @@
+server:
+  port: 9012
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+
+spring:
+  application:
+    name: gateway-predicate-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        #Path
+        - id: path_route
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/ha
+        #Method
+        - id: method_route
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Method=POST
+        #Header
+        - id: header_route
+          uri: lb://gateway-ha
+          predicates:
+            #- Header=id,001 #携带header信息，相当于键值对，id为key，001为value
+            - Header=id,\d+ #携带header信息，相当于键值对，id为key，\d+为value，是一个正则表达式，表达为正数
+        #Cookie
+        - id: cookie_route
+          uri: lb://gateway-ha
+          predicates:
+            #- Cookie=username,yzm #携带cookies信息，相当于键值对，username为key，yzm为value
+            - Cookie=username,\d+ #携带cookies信息，相当于键值对，username为key，\d+为value
+        #Host
+        - id: host_route
+          uri: lb://gateway-ha
+          predicates:
+            - Host=**.baidu.com,**.another.com
+        #Query
+        - id: query_route
+          uri: lb://gateway-ha
+          predicates:
+            #- Query=number,123 #带查询条件，第一个是查询参数，第二个是可选的值，有参数名为number且值=123
+            #- Query=number #带查询条件，有参数名为number，值无所谓
+            - Query=number,\d+
+        #Time
+#        - id: time_route
+#          uri: lb://gateway-ha
+#          predicates:
+#            - After=2020-10-30T15:00:22.432+08:00[Asia/Shanghai] #在该时区后发生
+#            - Before=2020-10-30T16:00:22.432+08:00[Asia/Shanghai] #在该时区前发生
+#            - Between=2020-10-30T15:00:22.432+08:00[Asia/Shanghai],2020-10-30T16:00:22.432+08:00[Asia/Shanghai] #在两个时区内发生

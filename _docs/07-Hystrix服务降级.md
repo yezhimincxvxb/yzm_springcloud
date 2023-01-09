@@ -15,7 +15,7 @@ Hystrix能够保证在一个依赖出问题的情况下，不会导致整体服�
 而不是长时间的等待或者抛出调用方无法处理的异常，这样就保证了服务调用方的线程不会被长时间、不必要地占用，从而避免了故障在分布式系统中的蔓延，乃至雪崩。
 ```
 # 服务降级
-作用与服务提供方：eureka-provider-payment-hystrix
+作用与服务提供方：hystrix-provider-payment
 ```text
 1、引入依赖
 <dependency>
@@ -28,20 +28,24 @@ Hystrix能够保证在一个依赖出问题的情况下，不会导致整体服�
 @EnableHystrix // 开启Hystrix
 public class HystrixPaymentApplication {}
 3、实现服务降级
-@HystrixCommand(fallbackMethod = "fallbackTimeout", commandProperties = {
+@HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
         @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
 })
-public CommonResult<String> timeout(String port) throws InterruptedException {
-    // 超时
-    Thread.sleep(3000);
-    return CommonResult.success("normal " + port + ", 线程：" + Thread.currentThread().getName());
+public CommonResult<String> timeout(String port, long millis, int flag) throws InterruptedException {
+    Thread.sleep(millis);
+
+    if (flag == 1) {
+        int i = 1 / 0;
+    }
+    return CommonResult.success("服务端口：" + port + ",线程：" + Thread.currentThread().getName() + ",UUID：" + UUID.randomUUID());
 }
 
-public CommonResult<String> fallbackTimeout(String port) {
-    return CommonResult.success("fallback " + port + ", 线程：" + Thread.currentThread().getName());
+public CommonResult<String> fallbackMethod(String port, long millis, int flag) throws InterruptedException {
+    log.info("port：{}, millis：{}, flag：{}", port, millis, flag);
+    return CommonResult.fail("服务端口：" + port + ",线程：" + Thread.currentThread().getName() + ",UUID：" + UUID.randomUUID());
 }
 ```
-作用与服务消费方(调用方)：eureka-consumer-order-hystrix
+作用与服务消费方(调用方)：hystrix-consumer-order
 ```text
 1、引入依赖
 <dependency>

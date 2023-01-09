@@ -13,7 +13,7 @@ Ribbon本地负载均衡客户端 VS Nginx服务端负载均衡区别
 Nginx是服务器负载均衡，客户端所有请求都会交给nginx，然后由nginx实现转发请求。即负载均衡是由服务端实现的。
 Ribbon本地负载均衡，在调用微服务接口时候，会在注册中心上获取注册信息服务列表之后缓存到JVM本地，从而在本地实现RPC远程服务调用技术。
 ```
-# 
+# 分类
 ```text
 集中式LB
 即在服务的消费方和提供方之间使用独立的LB设施(可以是硬件，如F5，也可以是软件，如nginx),由该设施负责把访问请求通过某种策略转发至服务的提供方;
@@ -34,7 +34,7 @@ ZoneAvoidanceRule：默认规则,复合判断server所在区域的性能和serve
 ```
 # 替换默认的规则
 ```text
-查看服务 eureka-consumer-order-ribbon
+ribbon-consumer-order
 ```
 # 算法/原理
 ![轮询算法](imgs/轮询算法.png)
