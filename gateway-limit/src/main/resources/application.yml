@@ -1,0 +1,63 @@
+server:
+  port: 9014
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+
+spring:
+  application:
+    name: gateway-limit-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        # 重试
+        - id: gateway_retry
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/order/retry/**
+          filters:
+            - name: Retry
+              args:
+                retries: 3
+                series: SERVER_ERROR
+                methods: GET,POST
+        # 熔断
+        - id: gateway_hystrix
+          uri: lb://gateway-provider-payment-service
+          predicates:
+            - Path=/payment/hystrix
+          filters:
+            - name: Hystrix
+              args:
+                #name: localFallback
+                #fallbackUri: forward:/fallback
+                name: otherFallback
+                fallbackUri: forward:/order/fallback
+        - id: gateway_fallback
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/order/fallback
+        # 限流
+        - id: gateway_limit
+          uri: lb://gateway-consumer-order-service
+          predicates:
+            - Path=/limit/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                redis-rate-limiter.replenishRate: 1 #令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 3 #令牌桶容量
+
+  redis:
+    host: 192.168.101.129
+    port: 6380
+    password: 3Q3Q
+    database: 0

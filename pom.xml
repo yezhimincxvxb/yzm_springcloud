@@ -30,6 +30,10 @@
         <module>gateway-provider-payment</module>
         <module>gateway-route</module>
         <module>gateway-predicate</module>
+        <module>gateway-filter</module>
+        <module>gateway-limit</module>
+        <module>sleuth-zipkin-consumer-order</module>
+        <module>sleuth-zipkin-provider-payment</module>
     </modules>
     <packaging>pom</packaging>
 
