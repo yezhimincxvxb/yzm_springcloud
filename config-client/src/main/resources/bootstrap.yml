@@ -1,0 +1,32 @@
+server:
+  port: 6601
+
+spring:
+  application:
+    name: config-client
+  cloud:
+    config:
+      # 直接绑定IP不利于扩展，应结合eureka绑定服务ID
+      # uri: http://localhost:6001
+      label: master
+      profile: test
+      discovery:
+        enabled: true
+        service-id: config-server
+  # MQ
+  rabbitmq:
+    host: 192.168.101.129
+    port: 5672
+    username: admin
+    password: 123456
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7001/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
