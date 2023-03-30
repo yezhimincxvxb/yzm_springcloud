@@ -36,6 +36,7 @@
         <module>sleuth-zipkin-provider-payment</module>
         <module>config-server</module>
         <module>config-client</module>
+        <module>eureka</module>
     </modules>
     <packaging>pom</packaging>
 
