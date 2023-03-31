@@ -9,25 +9,16 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>api-commons</module>
-        <module>zookeeper-consumer-order</module>
-        <module>zookeeper-provider-payment</module>
-        <module>consul-consumer-order</module>
-        <module>consul-provider-payment</module>
-        <module>ribbon-consumer-order</module>
-        <module>ribbon-provider-payment</module>
-        <module>openfeign-consumer-order</module>
-        <module>openfeign-provider-payment</module>
-        <module>hystrix-provider-payment</module>
-        <module>hystrix-consumer-order</module>
-        <module>hystrix-consumer-order2</module>
-        <module>hystrix-dashboard</module>
-        <module>hystrix-turbine</module>
-        <module>sleuth-zipkin-consumer-order</module>
-        <module>sleuth-zipkin-provider-payment</module>
         <module>config-server</module>
         <module>config-client</module>
         <module>eureka</module>
         <module>gateway</module>
+        <module>hystrix</module>
+        <module>feign</module>
+        <module>ribbon</module>
+        <module>sleuth</module>
+        <module>zookeeper</module>
+        <module>consul</module>
     </modules>
     <packaging>pom</packaging>
 
