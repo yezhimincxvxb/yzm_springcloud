@@ -1,6 +1,6 @@
 package com.yzm.gateway.payment.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,20 +26,20 @@ public class PaymentController {
 
 
     @GetMapping("/hello")
-    public CommonResult<String> hello() {
-        return CommonResult.success("hello " + port + ",UUID：" + UUID.randomUUID());
+    public RespResult<String> hello() {
+        return RespResult.success("hello " + port + ",UUID：" + UUID.randomUUID());
     }
 
     @GetMapping("/timeout/{millis}")
-    public CommonResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
+    public RespResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
         Thread.sleep(millis);
-        return CommonResult.success("timeout：" + port + ", millis：" + millis + ", UUID：" + UUID.randomUUID());
+        return RespResult.success("timeout：" + port + ", millis：" + millis + ", UUID：" + UUID.randomUUID());
     }
 
     @GetMapping("/getById/{id}")
-    public CommonResult<String> getById(@PathVariable("id") Integer id) {
+    public RespResult<String> getById(@PathVariable("id") Integer id) {
         if (id < 0) throw new RuntimeException("******id 不能负数");
-        return CommonResult.success("getById：" + port + ", params:" + id + ", UUID：" + UUID.randomUUID());
+        return RespResult.success("getById：" + port + ", params:" + id + ", UUID：" + UUID.randomUUID());
     }
 
 }

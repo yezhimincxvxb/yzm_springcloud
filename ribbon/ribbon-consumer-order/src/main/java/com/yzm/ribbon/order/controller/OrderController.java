@@ -1,6 +1,6 @@
 package com.yzm.ribbon.order.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +17,8 @@ public class OrderController {
     private RestTemplate restTemplate;
 
     @GetMapping("/hello")
-    public CommonResult<?> hello() {
-        return restTemplate.getForObject(PAYMENT_URL + "/hello", CommonResult.class);
+    public RespResult<?> hello() {
+        return restTemplate.getForObject(PAYMENT_URL + "/hello", RespResult.class);
     }
 
     @GetMapping(value = "/discovery")

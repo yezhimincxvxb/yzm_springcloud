@@ -1,6 +1,6 @@
 package com.yzm.ribbon.payment.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,9 +30,12 @@ public class PaymentController {
     private String port;
 
     @GetMapping("/hello")
-    public CommonResult<String> hello() {
-        return CommonResult.success("hello " + port + ",UUID：" + UUID.randomUUID());
+    public RespResult<String> hello() {
+        return RespResult.success("hello " + port + ",UUID：" + UUID.randomUUID());
     }
+
+    @Value("${spring.application.name}")
+    private String serviceInstance;
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -44,7 +47,7 @@ public class PaymentController {
             log.info("***** service: " + service);
         }
 
-        List<ServiceInstance> instances = discoveryClient.getInstances("RIBBON-PROVIDER-PAYMENT-SERVICE");
+        List<ServiceInstance> instances = discoveryClient.getInstances(serviceInstance);
         for (ServiceInstance instance : instances) {
             log.info(instance.getServiceId() + "\t" + instance.getHost() + "\t" + instance.getPort() + "\t" + instance.getUri());
         }

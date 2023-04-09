@@ -1,6 +1,6 @@
 package com.yzm.openfeign.payment.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,17 +27,17 @@ public class PaymentController {
     private String port;
 
     @GetMapping("/hello")
-    public CommonResult<String> hello() {
-        return CommonResult.success("服务端口：" + port + ",UUID：" + UUID.randomUUID());
+    public RespResult<String> hello() {
+        return RespResult.success("服务端口：" + port + ",UUID：" + UUID.randomUUID());
     }
 
     @GetMapping("timeout/{millis}")
-    public CommonResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
+    public RespResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
         if (millis < 0L) {
             throw new IllegalArgumentException("超时参数millis不能小于0");
         }
         Thread.sleep(millis);
-        return CommonResult.success("服务端口：" + port + ",超时时间：" + millis + ",UUID：" + UUID.randomUUID());
+        return RespResult.success("服务端口：" + port + ",超时时间：" + millis + ",UUID：" + UUID.randomUUID());
     }
 
 

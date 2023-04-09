@@ -1,6 +1,6 @@
 package com.yzm.hystrix.order.feign.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import com.yzm.hystrix.order.feign.feign.OrderFeign;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,12 @@ public class OrderController {
     private OrderFeign orderFeign;
 
     @GetMapping("/hello")
-    public CommonResult<?> hello() {
+    public RespResult<?> hello() {
         return orderFeign.hello();
     }
 
     @GetMapping("/timeout/{millis}/{flag}")
-    public CommonResult<String> timeout(@PathVariable("millis") long millis, @PathVariable("flag") int flag) throws InterruptedException {
+    public RespResult<String> timeout(@PathVariable("millis") long millis, @PathVariable("flag") int flag) throws InterruptedException {
         return orderFeign.timeout(millis, flag);
     }
 

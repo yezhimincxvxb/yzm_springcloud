@@ -1,6 +1,6 @@
 package com.yzm.openfeign.order.feign;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface OrderFeign {
 
     @GetMapping("/hello")
-    CommonResult<String> hello();
+    RespResult<String> hello();
 
     @GetMapping("timeout/{millis}")
-    CommonResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException;
+    RespResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException;
 }

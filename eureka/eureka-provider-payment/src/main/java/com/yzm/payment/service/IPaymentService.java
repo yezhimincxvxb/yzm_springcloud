@@ -1,16 +1,20 @@
 package com.yzm.payment.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.yzm.commons.entity.Payment;
+import com.yzm.commons.dto.PaymentDto;
+import com.yzm.commons.vo.PaymentVo;
+
+import java.util.List;
 
 /**
  * <p>
  * 服务类
  * </p>
- *
- * @author Yzm
- * @since 2023/01/04
  */
-public interface IPaymentService extends IService<Payment> {
+public interface IPaymentService {
 
+    PaymentVo getById(Long id);
+
+    List<PaymentVo> list();
+
+    Boolean save(PaymentDto paymentDto);
 }

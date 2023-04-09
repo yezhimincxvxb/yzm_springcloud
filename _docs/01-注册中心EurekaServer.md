@@ -24,7 +24,7 @@ EurekaClient通过注册中心进行访问
 在应用启动后，将会向Eureka Server发送心跳(默认周期为30秒)。
 如果Eureka Server在多个心跳周期内没有接收到其个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除(默认90秒)
 ```
-# 注册中心配置
+# 搭建 注册中心
 ```text
 1、添加依赖
 <dependency>
@@ -54,7 +54,7 @@ eureka:
 ```
 浏览器访问：http://localhost:7001/
 
-### 集群模式
+### 集群模式 实现负载均衡+故障容错
 ```text
 spring:
   profiles:
@@ -125,6 +125,7 @@ http://localhost:7002/、http://localhost:7003/、http://localhost:7004/
 或 
 http://eureka7002.com:7002/、http://eureka7003.com:7003/、http://eureka7004.com:7004/
 ![](imgs/注册中心集群.png)
+
 # 自我保护
 ```text
 为什么会产生Eureka自我保护机制?

@@ -1,6 +1,6 @@
 package com.yzm.openfeign.order.controller;
 
-import com.yzm.commons.api.CommonResult;
+import com.yzm.commons.api.RespResult;
 import com.yzm.openfeign.order.feign.OrderFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +16,12 @@ public class OrderController {
     private OrderFeign orderFeign;
 
     @GetMapping("/hello")
-    public CommonResult<?> hello() {
+    public RespResult<?> hello() {
         return orderFeign.hello();
     }
 
     @GetMapping("timeout/{millis}")
-    public CommonResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
+    public RespResult<String> timeout(@PathVariable("millis") long millis) throws InterruptedException {
         return orderFeign.timeout(millis);
     }
 }
